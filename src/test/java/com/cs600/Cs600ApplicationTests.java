@@ -1,4 +1,4 @@
-package com.chriskardell.cs600;
+package com.cs600;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
