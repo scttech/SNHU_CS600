@@ -45,5 +45,6 @@ in `moduleN/src/main/java/com/scttech/cs600/moduleN`:
 
 - [Module 2: Introduction to Spring Data JPA](./docs/module2/README.md)
 - [Module 3: TLS and HTTP Basic Auth](./docs/module3/README.md)
+- [Module 4: Database Design (PlantUML ERD)](./docs/module4/README.md)
 
 - [Troubleshooting: A problem/solution guide for common errors](./docs/troubleshooting/README.md)

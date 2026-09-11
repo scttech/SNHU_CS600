@@ -1,0 +1,186 @@
+@startuml database-design
+
+' Module 4: full database design for the registrar system.
+' Renders with the PlantUML VS Code extension, `plantuml` CLI, or https://www.plantuml.com/plantuml
+'
+' Conventions used throughout (see docs/module4/README.md for rationale):
+'   - Every table has a UUID surrogate primary key: id UUID PRIMARY KEY DEFAULT gen_random_uuid()
+'   - created_at / updated_at TIMESTAMPTZ audit columns are omitted from this diagram for
+'     readability, but apply to every table except pure join tables (course_prerequisites)
+'   - snake_case identifiers, matching Postgres/JPA (@Column(name = "...")) convention
+
+hide circle
+skinparam linetype ortho
+skinparam roundcorner 8
+skinparam shadowing false
+skinparam class {
+  BackgroundColor White
+  BorderColor #444444
+  ArrowColor #444444
+}
+
+!define pk(x) <b><color:#B8860B>x</color></b>
+!define fk(x) <color:#4682B4>x</color>
+
+' ---------------------------------------------------------------------------
+' Academic catalog
+' ---------------------------------------------------------------------------
+package "Academic Catalog" {
+
+  entity departments {
+    pk(id) : UUID
+    --
+    code : VARCHAR(10) <<unique>>
+    name : VARCHAR(150)
+    description : TEXT
+  }
+
+  entity courses {
+    pk(id) : UUID
+    --
+    fk(department_id) : UUID
+    course_code : VARCHAR(20) <<unique>>
+    title : VARCHAR(200)
+    description : TEXT
+    credits : SMALLINT
+  }
+
+  entity course_prerequisites {
+    pk(fk(course_id)) : UUID
+    pk(fk(prerequisite_course_id)) : UUID
+  }
+
+}
+
+' ---------------------------------------------------------------------------
+' People: employees (faculty/staff) and students
+' ---------------------------------------------------------------------------
+package "People" {
+
+  entity employees {
+    pk(id) : UUID
+    --
+    employee_number : VARCHAR(20) <<unique>>
+    first_name : VARCHAR(100)
+    last_name : VARCHAR(100)
+    email : VARCHAR(255) <<unique>>
+    fk(department_id) : UUID
+    employee_type : VARCHAR(10) <<"FACULTY" | "STAFF">>
+    hire_date : DATE
+    status : VARCHAR(20) <<default 'ACTIVE'>>
+  }
+
+  entity faculty_details {
+    pk(fk(employee_id)) : UUID
+    --
+    academic_rank : VARCHAR(50)
+    tenure_status : VARCHAR(20)
+    office_location : VARCHAR(100)
+  }
+
+  entity staff_details {
+    pk(fk(employee_id)) : UUID
+    --
+    job_title : VARCHAR(100)
+    office_location : VARCHAR(100)
+  }
+
+  entity students {
+    pk(id) : UUID
+    --
+    student_number : VARCHAR(20) <<unique>>
+    first_name : VARCHAR(100)
+    last_name : VARCHAR(100)
+    email : VARCHAR(255) <<unique>>
+    date_of_birth : DATE
+    enrollment_date : DATE
+    fk(department_id) : UUID <<nullable, declared major>>
+    status : VARCHAR(20) <<default 'ACTIVE'>>
+  }
+
+}
+
+' ---------------------------------------------------------------------------
+' Scheduling and enrollment
+' ---------------------------------------------------------------------------
+package "Scheduling & Enrollment" {
+
+  entity terms {
+    pk(id) : UUID
+    --
+    name : VARCHAR(50) <<unique>>
+    start_date : DATE
+    end_date : DATE
+  }
+
+  entity course_sections {
+    pk(id) : UUID
+    --
+    fk(course_id) : UUID
+    fk(term_id) : UUID
+    section_number : VARCHAR(10)
+    fk(instructor_id) : UUID <<nullable, references faculty_details>>
+    capacity : SMALLINT
+    location : VARCHAR(100)
+    schedule : VARCHAR(100)
+  }
+
+  entity enrollments {
+    pk(id) : UUID
+    --
+    fk(student_id) : UUID
+    fk(section_id) : UUID
+    enrollment_date : DATE
+    status : VARCHAR(20) <<default 'ENROLLED'>>
+    grade : VARCHAR(5)
+  }
+
+}
+
+' ---------------------------------------------------------------------------
+' Relationships
+' ---------------------------------------------------------------------------
+
+departments ||--o{ courses            : "has"
+departments ||--o{ employees          : "employs"
+departments |o--o{ students           : "is major of"
+
+courses ||--o{ course_prerequisites   : "course_id"
+courses ||--o{ course_prerequisites   : "prerequisite_course_id"
+
+courses ||--o{ course_sections        : "offered as"
+terms ||--o{ course_sections          : "scheduled in"
+
+employees ||--o| faculty_details      : "extends (when FACULTY)"
+employees ||--o| staff_details        : "extends (when STAFF)"
+
+faculty_details |o--o{ course_sections : "teaches"
+
+students ||--o{ enrollments           : "enrolls via"
+course_sections ||--o{ enrollments    : "filled by"
+
+' ---------------------------------------------------------------------------
+' Legend
+' ---------------------------------------------------------------------------
+
+legend right
+  |= sample |= meaning |
+  | <b><color:#B8860B>bold gold</color></b> field | primary key |
+  | <color:#4682B4>blue</color> field | foreign key |
+  --
+  **Crow's foot notation**
+  The symbol touching an entity describes how many rows of //that// entity
+  relate to a single row of the entity at the other end of the line.
+  --
+  **||**   exactly one
+  **o|**   zero or one
+  **o{**   zero or many
+  **|{**   one or many
+  --
+  Example: **departments ||--o{ courses**
+  Each course belongs to exactly one department (**||**, touching
+  departments). Each department has zero or many courses (**o{**, touching
+  courses).
+end legend
+
+@enduml
