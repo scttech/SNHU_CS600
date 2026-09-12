@@ -1,15 +1,15 @@
 services:
   postgres:
     image: postgres:16
-    container_name: module3-postgres
+    container_name: module5-postgres
     environment:
-      POSTGRES_DB: module3db
+      POSTGRES_DB: module5db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
     volumes:
-      - module3-postgres-data:/var/lib/postgresql/data
+      - module5-postgres-data:/var/lib/postgresql/data
 
 volumes:
-  module3-postgres-data:
+  module5-postgres-data:

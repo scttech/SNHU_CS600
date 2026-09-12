@@ -28,20 +28,40 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>17</java.version>
+		<!-- 21 because Vaadin 25 (see dependencyManagement below), used starting with module5's UI,
+			requires it; Spring Boot 4.1.1's own floor is Java 17. -->
+		<java.version>21</java.version>
+		<vaadin.version>25.2.7</vaadin.version>
 	</properties>
 
 	<!--
 		Each module of the course is its own independent Spring Boot application (own pom.xml, own
 		@SpringBootApplication, own port, own database) so that later modules never have to work
 		around earlier ones. This root pom exists to (a) let `./mvnw install` build every module in
-		one pass and (b) hand every module the same Spring Boot managed dependency versions, via this
-		parent's own spring-boot-starter-parent parent above. It doesn't declare any dependencies or
-		build a jar of its own. See docs/ and each module's own pom.xml for what that module adds.
+		one pass and (b) hand every module the same managed dependency versions, via this parent's
+		own spring-boot-starter-parent parent above plus the Vaadin BOM below. It doesn't declare any
+		dependencies or build a jar of its own. See docs/ and each module's own pom.xml for what that
+		module adds.
 	-->
 	<modules>
 		<module>module2</module>
 		<module>module3</module>
+		<module>module5</module>
 	</modules>
+
+	<!-- Vaadin BOM, imported here so every module gets matching versions of Vaadin artifacts the
+		same way the spring-boot-starter-parent above manages Spring Boot's; only modules that
+		actually add a vaadin-spring-boot-starter dependency (module5 on) pull any of it in. -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.vaadin</groupId>
+				<artifactId>vaadin-bom</artifactId>
+				<version>${vaadin.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 </project>

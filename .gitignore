@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Vaadin ###
+node_modules/
+**/src/main/frontend/generated/
+**/src/main/frontend/index.html
+pnpm-lock.yaml
+vaadin-dev-server-settings.json
