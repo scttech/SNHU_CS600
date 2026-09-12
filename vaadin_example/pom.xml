@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.scttech</groupId>
+		<artifactId>cs600</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<artifactId>vaadin_example</artifactId>
+	<name>vaadin_example</name>
+	<description>UI-only Vaadin component showcase: a living reference of the components and layouts
+		available to developers, with a live demo, source preview, and copy-to-clipboard button
+		for each one. Not a course module and has no database of its own.</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-spring-boot-starter</artifactId>
+		</dependency>
+		<!-- Powers Vaadin's dev-mode live reload; see module5's pom.xml for why this is a plain
+			dependency here instead of behind a production profile. -->
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-dev</artifactId>
+		</dependency>
+		<!-- Vaadin 25 no longer bundles a theme by default once an AppShellConfigurator is present
+			(see VaadinExampleApplication); this is what @StyleSheet(Lumo.STYLESHEET) there loads. -->
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-lumo-theme</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.vaadin</groupId>
+				<artifactId>vaadin-maven-plugin</artifactId>
+				<version>${vaadin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-frontend</goal>
+							<goal>build-frontend</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

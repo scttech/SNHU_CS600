@@ -49,3 +49,5 @@ in `moduleN/src/main/java/com/scttech/cs600/moduleN`:
 - [Module 5: Introduction to Vaadin](./docs/module5/README.md)
 
 - [Troubleshooting: A problem/solution guide for common errors](./docs/troubleshooting/README.md)
+
+- [`Vaadin Examples`](./docs/vaadin_example/README.md): a UI-only reference catalog of Vaadin components and layouts

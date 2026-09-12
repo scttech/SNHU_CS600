@@ -54,6 +54,12 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-dev</artifactId>
 		</dependency>
+		<!-- Vaadin 25 no longer bundles a theme by default once an AppShellConfigurator is present
+			(see Module5Application); this is what @StyleSheet(Lumo.STYLESHEET) there loads. -->
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-lumo-theme</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

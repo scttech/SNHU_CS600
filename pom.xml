@@ -47,6 +47,7 @@
 		<module>module2</module>
 		<module>module3</module>
 		<module>module5</module>
+		<module>vaadin_example</module>
 	</modules>
 
 	<!-- Vaadin BOM, imported here so every module gets matching versions of Vaadin artifacts the
