@@ -1,0 +1,54 @@
+@startuml
+hide circle
+hide empty members
+
+class User << (A,#e8f0ff) aggregate root >> {
+  id : UUID
+  username : Username
+  passwordHash : HashedPassword
+  enabled : boolean
+  createdAt : Instant
+  lastLoginAt : Instant
+  --
+  authenticate(rawPassword) : boolean
+  recordSuccessfulLogin()
+}
+
+class Username << (V,#fff3d6) value object >> {
+  value : String
+  --
+  {static} of(raw) : Username
+}
+note right of Username
+  Not blank, unique across all
+  users. Case-insensitive for
+  lookup (stored as entered).
+end note
+
+class HashedPassword << (V,#fff3d6) value object >> {
+  hash : String
+}
+note right of HashedPassword
+  BCrypt hash only — the raw
+  password is never persisted
+  or logged. Matches
+  PasswordEncoder already used
+  by the in-memory user today.
+end note
+
+User *-- Username
+User *-- HashedPassword
+
+note bottom of User
+  This story only needs enough of a User to
+  authenticate and to have something to audit
+  against later (id, timestamps). Roles /
+  permissions are a real requirement mentioned
+  for this system, but not one this story
+  implements — see "Not in this story" in the
+  README. Adding a Role/Permission model later
+  should not require reshaping this aggregate,
+  just extending it.
+end note
+
+@enduml

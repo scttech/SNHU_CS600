@@ -47,6 +47,9 @@ in `moduleN/src/main/java/com/scttech/cs600/moduleN`:
 - [Module 3: TLS and HTTP Basic Auth](./docs/module3/README.md)
 - [Module 4: Database Design (PlantUML ERD)](./docs/module4/README.md)
 - [Module 5: Introduction to Vaadin](./docs/module5/README.md)
+- [Module 6, Feature 1: Login Screen (Spring Security + Vaadin, Agile/DDD design)](./docs/module6_feature1/README.md)
+- [Module 6, Feature 2: Registrar Dashboard (post-login landing page)](./docs/module6_feature2/README.md)
+- [Module 7: Build out functionality](./docs/module7/README.md)
 
 - [Troubleshooting: A problem/solution guide for common errors](./docs/troubleshooting/README.md)
 

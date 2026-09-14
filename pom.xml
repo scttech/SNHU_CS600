@@ -47,6 +47,9 @@
 		<module>module2</module>
 		<module>module3</module>
 		<module>module5</module>
+		<module>module6_feature1</module>
+		<module>module6_feature2</module>
+		<module>module7</module>
 		<module>vaadin_example</module>
 	</modules>
 

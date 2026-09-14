@@ -1,0 +1,30 @@
+@startuml
+actor "Registrar staff" as Staff
+participant "Login Screen\n(Vaadin LoginForm)" as UI
+participant "Spring Security\nAuthenticationManager" as AuthMgr
+participant "UserDetailsService\n(reads the User aggregate)" as UDS
+database "users table" as Db
+participant "Course Catalog\n(Courses view)" as Courses
+
+Staff -> UI : enters username + password
+UI -> AuthMgr : authenticate(username, password)
+AuthMgr -> UDS : loadUserByUsername(username)
+UDS -> Db : SELECT ... WHERE username = ?
+Db --> UDS : user row (id, username, password_hash, enabled)
+UDS --> AuthMgr : UserDetails
+
+alt credentials valid
+  AuthMgr --> UI : Authentication (success)
+  UI -> Db : UPDATE users SET last_login_at = now()
+  note right
+    Not "logging in" per se — this is the
+    audit trail this feature exists to enable.
+  end note
+  UI -> Courses : navigate to Courses view
+  Courses --> Staff : Courses CRUD screen
+else credentials invalid
+  AuthMgr --> UI : BadCredentialsException
+  UI --> Staff : "Incorrect username or password"\n(stays on login screen)
+end
+
+@enduml

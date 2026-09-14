@@ -1,0 +1,27 @@
+@startsalt
+{
+  {^"Default"
+    {+
+      <b>Course Catalog
+      <i>Sign in to manage courses
+      ..
+      Username | "                        "
+      Password | "                        "
+      ..
+      [Log in]
+    }
+  } | {^"After a failed attempt"
+    {+
+      <b>Course Catalog
+      <i>Sign in to manage courses
+      ..
+      <color:crimson>Incorrect username or password.</color>
+      ..
+      Username | "                        "
+      Password | "                        "
+      ..
+      [Log in]
+    }
+  }
+}
+@endsalt

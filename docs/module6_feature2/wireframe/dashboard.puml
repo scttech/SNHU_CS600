@@ -1,0 +1,24 @@
+@startsalt
+{
+  {^"Registrar Dashboard"
+    Dashboard | . | . | "Signed in as student" | [Log out]
+    ==
+    <b>Registrar tools
+    {
+      {+
+        <b>Course Catalog
+        Add, edit, and remove courses
+        [Open]
+      } | {+
+        <b>Students
+        ..
+        <i>Coming in a future feature
+      } | {+
+        <b>Scheduling
+        ..
+        <i>Coming in a future feature
+      }
+    }
+  }
+}
+@endsalt

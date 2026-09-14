@@ -1,0 +1,44 @@
+@startuml
+skinparam componentStyle rectangle
+
+package "Identity & Access Context" as IAC {
+  [Login Screen (Vaadin)] as LoginUI
+}
+
+package "Registrar Workspace (application shell)" as Workspace {
+  [Dashboard] as DashboardUI
+}
+
+package "Course Catalog Context" as CCC {
+  [Course Catalog UI (Vaadin)] as CourseUI
+}
+
+package "Students Context (future)" as StudentsCtx #line.dashed {
+  [Students UI] as StudentsUI #line.dashed
+}
+
+package "Scheduling & Enrollment Context (future)" as SchedCtx #line.dashed {
+  [Scheduling UI] as SchedUI #line.dashed
+}
+
+LoginUI --> DashboardUI : grants an authenticated session
+DashboardUI --> CourseUI : Course Catalog tile
+DashboardUI ..> StudentsUI : Students tile (not built yet)
+DashboardUI ..> SchedUI : Scheduling tile (not built yet)
+
+note bottom of Workspace
+  Not a bounded context of its own — no new aggregate,
+  no persistent state (see README: "why no new
+  aggregate"). Just the application-layer landing page
+  that composes navigation into whichever contexts
+  exist, so no single context has to own "".
+end note
+
+note bottom of StudentsCtx
+  Module 4's ERD already scoped these two groups
+  of tables (People; Scheduling & enrollment) —
+  this is why the Dashboard has room for them now,
+  without redesigning it when they arrive.
+end note
+
+@enduml

@@ -1,0 +1,39 @@
+@startuml
+skinparam componentStyle rectangle
+
+package "Identity & Access Context" as IAC {
+  [Login Screen (Vaadin)] as LoginUI
+  [Spring Security Filter Chain] as Security
+  [User (aggregate root)] as UserAgg
+  database "users table" as UsersDb
+}
+
+package "Course Catalog Context" as CCC {
+  [Course Catalog UI (Vaadin)] as CourseUI
+  [Course (aggregate root)] as CourseAgg
+  database "courses table" as CoursesDb
+}
+
+LoginUI --> Security : submits credentials
+Security --> UserAgg : authenticate(username, password)
+UserAgg --> UsersDb : reads/writes
+
+Security ..> CourseUI : grants an\nauthenticated session\n<<upstream/downstream>>
+CourseUI --> CourseAgg
+CourseAgg --> CoursesDb
+
+note bottom of IAC
+  Owns everything about **who** can use the system:
+  credentials, login/logout, and (later) roles and
+  permissions. Doesn't know what a Course is.
+end note
+
+note bottom of CCC
+  Owns the course catalog itself. Depends on
+  Identity & Access only for "is there an
+  authenticated user?" — a conformist relationship,
+  via Spring Security's SecurityContext, not a
+  direct dependency on the User aggregate.
+end note
+
+@enduml

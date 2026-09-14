@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: module6_feature1-postgres
+    environment:
+      POSTGRES_DB: module6_feature1db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - module6_feature1-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  module6_feature1-postgres-data:
