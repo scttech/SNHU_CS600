@@ -1,4 +1,4 @@
-package com.scttech.cs600.module7;
+package com.scttech.cs600.module7.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -37,7 +37,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scttech.cs600.module7.config.ApiSecurityConfig;
-import com.scttech.cs600.module7.controller.CourseController;
 import com.scttech.cs600.module7.model.Course;
 import com.scttech.cs600.module7.model.User;
 import com.scttech.cs600.module7.repository.CourseRepository;

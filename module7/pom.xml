@@ -68,6 +68,15 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-lumo-theme</artifactId>
 		</dependency>
+		<!-- Restarts the app when compiled classes change, so vaadin-dev's live-reload client
+			(above) has something to refresh the browser after. spring-boot-maven-plugin excludes
+			this from repackaged jars automatically, so it never ships to production. -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

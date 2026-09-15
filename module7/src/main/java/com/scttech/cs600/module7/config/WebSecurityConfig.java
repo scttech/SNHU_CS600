@@ -10,7 +10,7 @@ import com.scttech.cs600.module7.ui.LoginView;
 import com.vaadin.flow.spring.security.VaadinSecurityConfigurer;
 
 /**
- * Everything that isn't {@code /api/courses/**} (see {@link ApiSecurityConfig}) — the Vaadin UI,
+ * Everything that isn't {@code /api/**} (see {@link ApiSecurityConfig}) — the Vaadin UI,
  * Swagger UI, actuator, the OpenAPI doc itself — now sits behind {@link LoginView} instead of
  * being wide open. {@link VaadinSecurityConfigurer} wires up form login against
  * {@link com.scttech.cs600.module7.security.DomainUserDetailsService}, permits Vaadin's

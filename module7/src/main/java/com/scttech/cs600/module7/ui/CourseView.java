@@ -54,6 +54,7 @@ public class CourseView extends VerticalLayout {
     private final Button cancel = new Button("Cancel");
     private final Button addNew = new Button("Add course");
 
+    @SuppressWarnings("null")
     public CourseView(CourseRepository courseRepository, AuthenticationContext authenticationContext) {
         this.courseRepository = courseRepository;
         setSizeFull();

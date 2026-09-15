@@ -1,4 +1,4 @@
-package com.scttech.cs600.module7;
+package com.scttech.cs600.module7.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,7 +15,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import com.scttech.cs600.module7.model.Course;
-import com.scttech.cs600.module7.repository.CourseRepository;
 
 /**
  * Runs the {@link CourseRepository} CRUD operations against a real, throwaway
