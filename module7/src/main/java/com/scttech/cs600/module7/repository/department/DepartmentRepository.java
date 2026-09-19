@@ -1,4 +1,4 @@
-package com.scttech.cs600.module7.repository;
+package com.scttech.cs600.module7.repository.department;
 
 import java.util.Optional;
 import java.util.UUID;

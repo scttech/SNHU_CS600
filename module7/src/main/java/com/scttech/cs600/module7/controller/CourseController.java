@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.scttech.cs600.module7.model.Course;
-import com.scttech.cs600.module7.repository.CourseRepository;
-import com.scttech.cs600.module7.service.CourseService;
+import com.scttech.cs600.module7.model.course.Course;
+import com.scttech.cs600.module7.repository.course.CourseRepository;
+import com.scttech.cs600.module7.service.course.CourseService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

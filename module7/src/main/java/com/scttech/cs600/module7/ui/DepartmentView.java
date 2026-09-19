@@ -3,7 +3,7 @@ package com.scttech.cs600.module7.ui;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.scttech.cs600.module7.model.department.Department;
-import com.scttech.cs600.module7.repository.DepartmentRepository;
+import com.scttech.cs600.module7.repository.department.DepartmentRepository;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;

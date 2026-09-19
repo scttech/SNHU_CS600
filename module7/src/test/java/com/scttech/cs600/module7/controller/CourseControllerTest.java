@@ -37,12 +37,12 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scttech.cs600.module7.config.ApiSecurityConfig;
-import com.scttech.cs600.module7.model.Course;
-import com.scttech.cs600.module7.model.User;
-import com.scttech.cs600.module7.repository.CourseRepository;
-import com.scttech.cs600.module7.repository.UserRepository;
+import com.scttech.cs600.module7.model.course.Course;
+import com.scttech.cs600.module7.model.user.User;
+import com.scttech.cs600.module7.repository.course.CourseRepository;
+import com.scttech.cs600.module7.repository.user.UserRepository;
 import com.scttech.cs600.module7.security.DomainUserDetailsService;
-import com.scttech.cs600.module7.service.CourseService;
+import com.scttech.cs600.module7.service.course.CourseService;
 
 /**
  * Exercises {@link CourseController} in isolation: MockMvc drives real HTTP request handling

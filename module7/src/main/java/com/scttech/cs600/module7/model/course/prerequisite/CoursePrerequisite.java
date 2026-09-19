@@ -1,4 +1,6 @@
-package com.scttech.cs600.module7.model;
+package com.scttech.cs600.module7.model.course.prerequisite;
+
+import com.scttech.cs600.module7.model.course.Course;
 
 import jakarta.persistence.CheckConstraint;
 import jakarta.persistence.EmbeddedId;

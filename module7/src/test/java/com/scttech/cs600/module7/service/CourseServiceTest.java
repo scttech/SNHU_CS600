@@ -16,12 +16,14 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
-import com.scttech.cs600.module7.model.Course;
-import com.scttech.cs600.module7.model.CoursePrerequisite;
+import com.scttech.cs600.module7.model.course.Course;
+import com.scttech.cs600.module7.model.course.prerequisite.CoursePrerequisite;
 import com.scttech.cs600.module7.model.department.Department;
-import com.scttech.cs600.module7.repository.CoursePrerequisiteRepository;
-import com.scttech.cs600.module7.repository.CourseRepository;
-import com.scttech.cs600.module7.repository.DepartmentRepository;
+import com.scttech.cs600.module7.repository.course.CourseRepository;
+import com.scttech.cs600.module7.repository.course.prerequisite.CoursePrerequisiteRepository;
+import com.scttech.cs600.module7.repository.department.DepartmentRepository;
+import com.scttech.cs600.module7.service.course.CourseService;
+import com.scttech.cs600.module7.service.course.exception.PrerequisiteCycleException;
 
 import jakarta.persistence.EntityManager;
 

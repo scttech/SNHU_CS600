@@ -1,4 +1,4 @@
-package com.scttech.cs600.module7.repository;
+package com.scttech.cs600.module7.repository.course.prerequisite;
 
 import java.util.List;
 
@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.scttech.cs600.module7.model.Course;
-import com.scttech.cs600.module7.model.CoursePrerequisite;
-import com.scttech.cs600.module7.model.CoursePrerequisiteId;
+import com.scttech.cs600.module7.model.course.Course;
+import com.scttech.cs600.module7.model.course.prerequisite.CoursePrerequisite;
+import com.scttech.cs600.module7.model.course.prerequisite.CoursePrerequisiteId;
 
 public interface CoursePrerequisiteRepository extends JpaRepository<CoursePrerequisite, CoursePrerequisiteId> {
 

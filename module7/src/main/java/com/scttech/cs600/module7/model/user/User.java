@@ -1,4 +1,4 @@
-package com.scttech.cs600.module7.model;
+package com.scttech.cs600.module7.model.user;
 
 import java.time.Instant;
 import java.util.UUID;

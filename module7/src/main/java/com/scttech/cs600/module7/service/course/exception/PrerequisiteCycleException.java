@@ -1,9 +1,10 @@
-package com.scttech.cs600.module7.service;
+package com.scttech.cs600.module7.service.course.exception;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.scttech.cs600.module7.model.Course;
+import com.scttech.cs600.module7.model.course.Course;
+import com.scttech.cs600.module7.service.course.CourseService;
 
 /**
  * Thrown by {@link CourseService} when a set of prerequisites would make a course impossible to

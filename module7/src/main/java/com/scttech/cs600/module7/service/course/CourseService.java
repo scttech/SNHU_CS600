@@ -1,4 +1,4 @@
-package com.scttech.cs600.module7.service;
+package com.scttech.cs600.module7.service.course;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -13,10 +13,11 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.scttech.cs600.module7.model.Course;
-import com.scttech.cs600.module7.model.CoursePrerequisite;
-import com.scttech.cs600.module7.repository.CoursePrerequisiteRepository;
-import com.scttech.cs600.module7.repository.CourseRepository;
+import com.scttech.cs600.module7.model.course.Course;
+import com.scttech.cs600.module7.model.course.prerequisite.CoursePrerequisite;
+import com.scttech.cs600.module7.repository.course.CourseRepository;
+import com.scttech.cs600.module7.repository.course.prerequisite.CoursePrerequisiteRepository;
+import com.scttech.cs600.module7.service.course.exception.PrerequisiteCycleException;
 
 /**
  * The course operations that involve prerequisites. The two writes touch more than one table, so

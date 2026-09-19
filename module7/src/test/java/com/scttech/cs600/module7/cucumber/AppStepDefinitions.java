@@ -11,8 +11,8 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.scttech.cs600.module7.cucumber.TestHttpClient.Response;
-import com.scttech.cs600.module7.model.User;
-import com.scttech.cs600.module7.repository.UserRepository;
+import com.scttech.cs600.module7.model.user.User;
+import com.scttech.cs600.module7.repository.user.UserRepository;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;

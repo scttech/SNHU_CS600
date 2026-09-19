@@ -23,10 +23,10 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import com.scttech.cs600.module7.config.ApiSecurityConfig;
-import com.scttech.cs600.module7.model.User;
 import com.scttech.cs600.module7.model.department.Department;
-import com.scttech.cs600.module7.repository.DepartmentRepository;
-import com.scttech.cs600.module7.repository.UserRepository;
+import com.scttech.cs600.module7.model.user.User;
+import com.scttech.cs600.module7.repository.department.DepartmentRepository;
+import com.scttech.cs600.module7.repository.user.UserRepository;
 import com.scttech.cs600.module7.security.DomainUserDetailsService;
 
 /**

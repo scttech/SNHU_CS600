@@ -1,4 +1,4 @@
-package com.scttech.cs600.module7.repository;
+package com.scttech.cs600.module7.repository.course.prerequisite;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -15,9 +15,11 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
-import com.scttech.cs600.module7.model.Course;
-import com.scttech.cs600.module7.model.CoursePrerequisite;
+import com.scttech.cs600.module7.model.course.Course;
+import com.scttech.cs600.module7.model.course.prerequisite.CoursePrerequisite;
 import com.scttech.cs600.module7.model.department.Department;
+import com.scttech.cs600.module7.repository.course.CourseRepository;
+import com.scttech.cs600.module7.repository.department.DepartmentRepository;
 
 /**
  * Runs the {@link CoursePrerequisiteRepository} against a real, throwaway

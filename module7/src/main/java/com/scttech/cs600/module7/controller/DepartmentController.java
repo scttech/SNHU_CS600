@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.scttech.cs600.module7.model.department.Department;
-import com.scttech.cs600.module7.repository.DepartmentRepository;
+import com.scttech.cs600.module7.repository.department.DepartmentRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

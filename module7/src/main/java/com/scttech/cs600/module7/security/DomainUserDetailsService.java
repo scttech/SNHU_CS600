@@ -5,8 +5,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.scttech.cs600.module7.model.User;
-import com.scttech.cs600.module7.repository.UserRepository;
+import com.scttech.cs600.module7.model.user.User;
+import com.scttech.cs600.module7.repository.user.UserRepository;
 
 /**
  * Bridges Spring Security's authentication mechanism to the {@link User} aggregate — both the

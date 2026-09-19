@@ -7,14 +7,14 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.scttech.cs600.module7.model.Course;
-import com.scttech.cs600.module7.model.CoursePrerequisite;
+import com.scttech.cs600.module7.model.course.Course;
+import com.scttech.cs600.module7.model.course.prerequisite.CoursePrerequisite;
 import com.scttech.cs600.module7.model.department.Department;
-import com.scttech.cs600.module7.repository.CoursePrerequisiteRepository;
-import com.scttech.cs600.module7.repository.CourseRepository;
-import com.scttech.cs600.module7.repository.DepartmentRepository;
-import com.scttech.cs600.module7.service.CourseService;
-import com.scttech.cs600.module7.service.PrerequisiteCycleException;
+import com.scttech.cs600.module7.repository.course.CourseRepository;
+import com.scttech.cs600.module7.repository.course.prerequisite.CoursePrerequisiteRepository;
+import com.scttech.cs600.module7.repository.department.DepartmentRepository;
+import com.scttech.cs600.module7.service.course.CourseService;
+import com.scttech.cs600.module7.service.course.exception.PrerequisiteCycleException;
 
 import org.springframework.data.domain.Sort;
 

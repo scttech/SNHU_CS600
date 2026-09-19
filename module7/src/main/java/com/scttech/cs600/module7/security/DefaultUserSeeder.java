@@ -6,8 +6,8 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.scttech.cs600.module7.model.User;
-import com.scttech.cs600.module7.repository.UserRepository;
+import com.scttech.cs600.module7.model.user.User;
+import com.scttech.cs600.module7.repository.user.UserRepository;
 
 /**
  * Seeds one sign-in-able user so the app is usable immediately after {@code docker compose up -d},

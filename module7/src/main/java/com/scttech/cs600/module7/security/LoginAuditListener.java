@@ -4,7 +4,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.stereotype.Component;
 
-import com.scttech.cs600.module7.repository.UserRepository;
+import com.scttech.cs600.module7.repository.user.UserRepository;
 
 /**
  * The audit hook this story exists to build: every time someone's credentials are successfully
