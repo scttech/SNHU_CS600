@@ -15,6 +15,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import com.scttech.cs600.module7.model.Course;
+import com.scttech.cs600.module7.model.department.Department;
 
 /**
  * Runs the {@link CourseRepository} CRUD operations against a real, throwaway
@@ -35,9 +36,12 @@ class CourseRepositoryTest {
     @Autowired
     private CourseRepository courseRepository;
 
+    @Autowired
+    private DepartmentRepository departmentRepository;
+
     @Test
     void createsAndReadsACourse() {
-        Course saved = courseRepository.save(new Course("CS-600", "Software Design and Development", 3));
+        Course saved = courseRepository.saveAndFlush(newCourse("CS-600", "Software Design and Development", 3));
 
         assertThat(saved.getId()).isNotNull();
 
@@ -51,7 +55,7 @@ class CourseRepositoryTest {
 
     @Test
     void findsACourseByCourseCode() {
-        courseRepository.save(new Course("CS-500", "Foundations of Computer Science", 3));
+        courseRepository.saveAndFlush(newCourse("CS-500", "Foundations of Computer Science", 3));
 
         Optional<Course> found = courseRepository.findByCourseCode("CS-500");
 
@@ -61,10 +65,10 @@ class CourseRepositoryTest {
 
     @Test
     void updatesACourse() {
-        Course saved = courseRepository.save(new Course("CS-610", "Placeholder Title", 3));
+        Course saved = courseRepository.saveAndFlush(newCourse("CS-610", "Placeholder Title", 3));
 
         saved.setTitle("Algorithms & Data Structures");
-        courseRepository.save(saved);
+        courseRepository.saveAndFlush(saved);
 
         Course updated = courseRepository.findById(saved.getId()).orElseThrow();
 
@@ -73,7 +77,7 @@ class CourseRepositoryTest {
 
     @Test
     void deletesACourse() {
-        Course saved = courseRepository.save(new Course("CS-620", "Temporary Course", 3));
+        Course saved = courseRepository.saveAndFlush(newCourse("CS-620", "Temporary Course", 3));
 
         courseRepository.deleteById(saved.getId());
 
@@ -82,11 +86,23 @@ class CourseRepositoryTest {
 
     @Test
     void listsAllCourses() {
-        courseRepository.save(new Course("CS-630", "Course A", 3));
-        courseRepository.save(new Course("CS-640", "Course B", 3));
+        courseRepository.saveAndFlush(newCourse("CS-630", "Course A", 3));
+        courseRepository.saveAndFlush(newCourse("CS-640", "Course B", 3));
 
         List<Course> all = courseRepository.findAll();
 
         assertThat(all).hasSize(2);
+    }
+
+    /**
+     * Builds a {@link Course} with a freshly persisted {@link Department} attached,
+     * since {@code department_id} is a required foreign key. The department code is
+     * derived from the course code to keep it unique per test.
+     */
+    private Course newCourse(String courseCode, String title, int credits) {
+        Department department = departmentRepository
+                .saveAndFlush(new Department(courseCode, courseCode + " Department"));
+
+        return new Course(courseCode, title, credits, department);
     }
 }

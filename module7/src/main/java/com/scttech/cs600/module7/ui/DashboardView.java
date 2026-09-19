@@ -30,6 +30,7 @@ public class DashboardView extends VerticalLayout {
 
         HorizontalLayout tiles = new HorizontalLayout(
                 tool("Course Catalog", "Add, edit, and remove courses", CourseView.class),
+                tool("Departments", "Add, edit, and remove departments", DepartmentView.class),
                 comingSoon("Students"),
                 comingSoon("Scheduling"));
         add(tiles);

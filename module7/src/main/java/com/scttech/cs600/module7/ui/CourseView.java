@@ -1,10 +1,15 @@
 package com.scttech.cs600.module7.ui;
 
 import com.scttech.cs600.module7.model.Course;
+import com.scttech.cs600.module7.model.department.Department;
 import com.scttech.cs600.module7.repository.CourseRepository;
+import com.scttech.cs600.module7.repository.DepartmentRepository;
+
+import org.springframework.data.domain.Sort;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
@@ -14,6 +19,7 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.router.Route;
@@ -47,6 +53,7 @@ public class CourseView extends VerticalLayout {
     private final TextField courseCode = new TextField("Course code");
     private final TextField title = new TextField("Title");
     private final IntegerField credits = new IntegerField("Credits");
+    private final ComboBox<Department> department = new ComboBox<>("Department");
     private final Binder<Course> binder = new BeanValidationBinder<>(Course.class);
 
     private final Button save = new Button("Save");
@@ -55,19 +62,34 @@ public class CourseView extends VerticalLayout {
     private final Button addNew = new Button("Add course");
 
     @SuppressWarnings("null")
-    public CourseView(CourseRepository courseRepository, AuthenticationContext authenticationContext) {
+    public CourseView(CourseRepository courseRepository, DepartmentRepository departmentRepository,
+            AuthenticationContext authenticationContext) {
         this.courseRepository = courseRepository;
         setSizeFull();
 
         grid.addColumn(Course::getCourseCode).setHeader("Course code").setAutoWidth(true);
         grid.addColumn(Course::getTitle).setHeader("Title").setAutoWidth(true);
         grid.addColumn(Course::getCredits).setHeader("Credits").setAutoWidth(true);
+        grid.addColumn(course -> course.getDepartment() == null ? "" : course.getDepartment().getCode())
+                .setHeader("Department").setAutoWidth(true);
         grid.setSizeFull();
         grid.asSingleSelect().addValueChangeListener(event -> editCourse(event.getValue()));
+
+        // Department has no equals(), and the grid's departments come from a different query than
+        // this list, so identify them by id or the combo box can't show the course's current one.
+        department.setItems(new ListDataProvider<>(departmentRepository.findAll(Sort.by("code"))) {
+            @Override
+            public Object getId(Department item) {
+                return item.getId();
+            }
+        });
+        department.setItemLabelGenerator(d -> d.getCode() + " – " + d.getName());
 
         binder.forField(courseCode).bind(Course::getCourseCode, Course::setCourseCode);
         binder.forField(title).bind(Course::getTitle, Course::setTitle);
         binder.forField(credits).bind(Course::getCredits, Course::setCredits);
+        binder.forField(department).asRequired("Department is required")
+                .bind(Course::getDepartment, Course::setDepartment);
 
         save.addClickListener(event -> save());
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -79,7 +101,7 @@ public class CourseView extends VerticalLayout {
             editCourse(new Course("", "", 1));
         });
 
-        VerticalLayout form = new VerticalLayout(courseCode, title, credits,
+        VerticalLayout form = new VerticalLayout(courseCode, title, credits, department,
                 new HorizontalLayout(save, delete, cancel));
         form.setWidth("20em");
 
@@ -103,6 +125,7 @@ public class CourseView extends VerticalLayout {
         courseCode.setEnabled(enabled);
         title.setEnabled(enabled);
         credits.setEnabled(enabled);
+        department.setEnabled(enabled);
         save.setEnabled(enabled);
         cancel.setEnabled(enabled);
         delete.setEnabled(enabled && binder.getBean().getId() != null);

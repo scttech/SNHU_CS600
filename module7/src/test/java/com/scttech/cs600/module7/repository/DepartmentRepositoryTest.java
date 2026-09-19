@@ -29,7 +29,7 @@ class DepartmentRepositoryTest {
     private DepartmentRepository departmentRepository;
 
     Department createStandardCsDepartment() {
-        Department createdDepartment = departmentRepository.save(new Department("CS", "Computer Science", "CS Department"));
+        Department createdDepartment = departmentRepository.saveAndFlush(new Department("CS", "Computer Science", "CS Department"));
 
         assertThat(createdDepartment.getId()).isNotNull();
         
@@ -38,7 +38,7 @@ class DepartmentRepositoryTest {
 
     @Test
     void createsAndReadsADepartment() {
-        Department saved = departmentRepository.save(new Department("CS", "Computer Science"));
+        Department saved = departmentRepository.saveAndFlush(new Department("CS", "Computer Science"));
 
         assertThat(saved.getId()).isNotNull();
 
@@ -76,7 +76,7 @@ class DepartmentRepositoryTest {
         Department saved = createStandardCsDepartment();
 
         saved.setName("Computer Sciences");
-        departmentRepository.save(saved);
+        departmentRepository.saveAndFlush(saved);
 
         Department updated = departmentRepository.findById(saved.getId()).orElseThrow();
 
@@ -94,8 +94,8 @@ class DepartmentRepositoryTest {
 
     @Test
     void listsAllDepartments() {
-        departmentRepository.save(new Department("CS", "Computer Science"));
-        departmentRepository.save(new Department("MATH", "Mathematics"));
+        departmentRepository.saveAndFlush(new Department("CS", "Computer Science"));
+        departmentRepository.saveAndFlush(new Department("MATH", "Mathematics"));
 
         List<Department> all = departmentRepository.findAll();
 
