@@ -16,6 +16,8 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import com.scttech.cs600.module7.model.department.Department;
 
+import jakarta.persistence.EntityManager;
+
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Testcontainers
@@ -27,6 +29,9 @@ class DepartmentRepositoryTest {
 
     @Autowired
     private DepartmentRepository departmentRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     Department createStandardCsDepartment() {
         Department createdDepartment = departmentRepository.saveAndFlush(new Department("CS", "Computer Science", "CS Department"));
@@ -100,6 +105,29 @@ class DepartmentRepositoryTest {
         List<Department> all = departmentRepository.findAll();
 
         assertThat(all).hasSize(2);
+    }
+
+    @Test
+    void departmentsAreEqualById() {
+        Department saved = createStandardCsDepartment();
+        Department other = departmentRepository.saveAndFlush(new Department("MATH", "Mathematics"));
+
+        entityManager.clear();
+        Department reloaded = departmentRepository.findById(saved.getId()).orElseThrow();
+
+        assertThat(reloaded)
+                .isNotSameAs(saved)
+                .isEqualTo(saved)
+                .hasSameHashCodeAs(saved)
+                .isNotEqualTo(other);
+    }
+
+    @Test
+    void unsavedDepartmentsAreOnlyEqualToThemselves() {
+        Department first = new Department("CS", "Computer Science");
+        Department second = new Department("CS", "Computer Science");
+
+        assertThat(first).isEqualTo(first).isNotEqualTo(second);
     }
 
 }

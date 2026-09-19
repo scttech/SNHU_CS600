@@ -85,5 +85,27 @@ public class Department {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
+    /**
+     * Two departments are the same when they have the same database id, so instances loaded by
+     * different queries (or sessions) compare equal. A department that hasn't been saved yet has no
+     * id and is only equal to itself.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        return o instanceof Department other && id != null && id.equals(other.getId());
+    }
+
+    /**
+     * Constant on purpose: {@code id} is null until the entity is persisted, and a hash that
+     * changed on save would break hash-based collections holding an unsaved department.
+     */
+    @Override
+    public int hashCode() {
+        return Department.class.hashCode();
+    }
+
 }

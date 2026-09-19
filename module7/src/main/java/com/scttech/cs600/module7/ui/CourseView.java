@@ -19,7 +19,6 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.router.Route;
@@ -75,14 +74,7 @@ public class CourseView extends VerticalLayout {
         grid.setSizeFull();
         grid.asSingleSelect().addValueChangeListener(event -> editCourse(event.getValue()));
 
-        // Department has no equals(), and the grid's departments come from a different query than
-        // this list, so identify them by id or the combo box can't show the course's current one.
-        department.setItems(new ListDataProvider<>(departmentRepository.findAll(Sort.by("code"))) {
-            @Override
-            public Object getId(Department item) {
-                return item.getId();
-            }
-        });
+        department.setItems(departmentRepository.findAll(Sort.by("code")));
         department.setItemLabelGenerator(d -> d.getCode() + " – " + d.getName());
 
         binder.forField(courseCode).bind(Course::getCourseCode, Course::setCourseCode);
