@@ -42,11 +42,12 @@ import com.scttech.cs600.module7.model.User;
 import com.scttech.cs600.module7.repository.CourseRepository;
 import com.scttech.cs600.module7.repository.UserRepository;
 import com.scttech.cs600.module7.security.DomainUserDetailsService;
+import com.scttech.cs600.module7.service.CourseService;
 
 /**
  * Exercises {@link CourseController} in isolation: MockMvc drives real HTTP request handling
- * (routing, validation, JSON, status codes) while {@link CourseRepository} and
- * {@link UserRepository} are mocked, so no database is involved. {@link ApiSecurityConfig} and
+ * (routing, validation, JSON, status codes) while {@link CourseRepository}, {@link CourseService}
+ * and {@link UserRepository} are mocked, so no database is involved. {@link ApiSecurityConfig} and
  * {@link DomainUserDetailsService} are imported explicitly because neither a plain
  * {@code @Configuration} class nor a {@code @Service} is picked up by {@code @WebMvcTest}'s
  * restricted component scan on its own — without them, these requests would hit Spring Boot's
@@ -72,6 +73,9 @@ class CourseControllerTest {
 
     @MockitoBean
     private CourseRepository courseRepository;
+
+    @MockitoBean
+    private CourseService courseService;
 
     @MockitoBean
     private UserRepository userRepository;
@@ -199,21 +203,24 @@ class CourseControllerTest {
     @Test
     void deletesACourse() throws Exception {
         UUID id = UUID.randomUUID();
-        given(courseRepository.existsById(id)).willReturn(true);
+        Course existing = existingCourse(id, "CS-600", "Software Design and Development", 3);
+        given(courseRepository.findById(id)).willReturn(Optional.of(existing));
 
         mockMvc.perform(authenticated(delete("/api/courses/{id}", id)))
                 .andExpect(status().isNoContent());
 
-        verify(courseRepository).deleteById(id);
+        verify(courseService).delete(existing);
     }
 
     @Test
     void returns404WhenDeletingAMissingCourse() throws Exception {
         UUID id = UUID.randomUUID();
-        given(courseRepository.existsById(id)).willReturn(false);
+        given(courseRepository.findById(id)).willReturn(Optional.empty());
 
         mockMvc.perform(authenticated(delete("/api/courses/{id}", id)))
                 .andExpect(status().isNotFound());
+
+        verifyNoInteractions(courseService);
     }
 
     @Test

@@ -17,6 +17,8 @@ import org.testcontainers.postgresql.PostgreSQLContainer;
 import com.scttech.cs600.module7.model.Course;
 import com.scttech.cs600.module7.model.department.Department;
 
+import jakarta.persistence.EntityManager;
+
 /**
  * Runs the {@link CourseRepository} CRUD operations against a real, throwaway
  * Postgres container (via Testcontainers) rather than the docker-compose one used
@@ -38,6 +40,9 @@ class CourseRepositoryTest {
 
     @Autowired
     private DepartmentRepository departmentRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Test
     void createsAndReadsACourse() {
@@ -92,6 +97,29 @@ class CourseRepositoryTest {
         List<Course> all = courseRepository.findAll();
 
         assertThat(all).hasSize(2);
+    }
+
+    @Test
+    void coursesAreEqualById() {
+        Course saved = courseRepository.saveAndFlush(newCourse("CS-650", "Course A", 3));
+        Course other = courseRepository.saveAndFlush(newCourse("CS-660", "Course B", 3));
+
+        entityManager.clear();
+        Course reloaded = courseRepository.findById(saved.getId()).orElseThrow();
+
+        assertThat(reloaded)
+                .isNotSameAs(saved)
+                .isEqualTo(saved)
+                .hasSameHashCodeAs(saved)
+                .isNotEqualTo(other);
+    }
+
+    @Test
+    void unsavedCoursesAreOnlyEqualToThemselves() {
+        Course first = new Course("CS-670", "Course C", 3);
+        Course second = new Course("CS-670", "Course C", 3);
+
+        assertThat(first).isEqualTo(first).isNotEqualTo(second);
     }
 
     /**

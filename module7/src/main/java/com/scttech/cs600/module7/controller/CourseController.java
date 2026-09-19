@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.scttech.cs600.module7.model.Course;
 import com.scttech.cs600.module7.repository.CourseRepository;
+import com.scttech.cs600.module7.service.CourseService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -38,9 +39,11 @@ import jakarta.validation.Valid;
 public class CourseController {
 
     private final CourseRepository courseRepository;
+    private final CourseService courseService;
 
-    public CourseController(CourseRepository courseRepository) {
+    public CourseController(CourseRepository courseRepository, CourseService courseService) {
         this.courseRepository = courseRepository;
+        this.courseService = courseService;
     }
 
     @GetMapping
@@ -75,10 +78,8 @@ public class CourseController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a course")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        if (!courseRepository.existsById(id)) {
-            throw notFound(id);
-        }
-        courseRepository.deleteById(id);
+        Course course = courseRepository.findById(id).orElseThrow(() -> notFound(id));
+        courseService.delete(course);
         return ResponseEntity.noContent().build();
     }
 

@@ -95,4 +95,26 @@ public class Course {
     public void setDepartment(Department department) {
         this.department = department;
     }
+
+    /**
+     * Two courses are the same when they have the same database id, so instances loaded by
+     * different queries (or sessions) compare equal. A course that hasn't been saved yet has no id
+     * and is only equal to itself.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        return o instanceof Course other && id != null && id.equals(other.getId());
+    }
+
+    /**
+     * Constant on purpose: {@code id} is null until the entity is persisted, and a hash that
+     * changed on save would break hash-based collections holding an unsaved course.
+     */
+    @Override
+    public int hashCode() {
+        return Course.class.hashCode();
+    }
 }
