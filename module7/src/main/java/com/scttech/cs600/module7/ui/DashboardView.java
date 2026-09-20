@@ -35,7 +35,7 @@ public class DashboardView extends VerticalLayout {
                 tool("Course Catalog", "Add, edit, and remove courses", CourseView.class),
                 tool("Departments", "Add, edit, and remove departments", DepartmentView.class),
                 tool("Faculty & Staff", "Add, edit, and remove faculty and staff members", EmployeeView.class),
-                comingSoon("Students"),
+                tool("Students", "Add, edit, and remove students", StudentView.class),
                 comingSoon("Scheduling"));
         tiles.setFlexWrap(FlexWrap.WRAP);
         tiles.setWidthFull();

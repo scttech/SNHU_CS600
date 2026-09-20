@@ -15,9 +15,12 @@ import com.scttech.cs600.module7.model.employees.Employee;
 import com.scttech.cs600.module7.model.employees.EmployeeType;
 import com.scttech.cs600.module7.model.employees.faculty.AcademicRank;
 import com.scttech.cs600.module7.model.employees.faculty.TenureStatus;
+import com.scttech.cs600.module7.model.students.Student;
+import com.scttech.cs600.module7.model.students.StudentStatus;
 import com.scttech.cs600.module7.repository.course.CourseRepository;
 import com.scttech.cs600.module7.repository.department.DepartmentRepository;
 import com.scttech.cs600.module7.repository.employees.EmployeeRepository;
+import com.scttech.cs600.module7.repository.students.StudentRepository;
 import com.scttech.cs600.module7.service.course.CourseService;
 import com.scttech.cs600.module7.service.employees.EmployeeService;
 
@@ -40,15 +43,17 @@ public class SampleDataSeeder implements ApplicationRunner {
     private final CourseService courseService;
     private final EmployeeRepository employeeRepository;
     private final EmployeeService employeeService;
+    private final StudentRepository studentRepository;
 
     public SampleDataSeeder(DepartmentRepository departmentRepository, CourseRepository courseRepository,
             CourseService courseService, EmployeeRepository employeeRepository,
-            EmployeeService employeeService) {
+            EmployeeService employeeService, StudentRepository studentRepository) {
         this.departmentRepository = departmentRepository;
         this.courseRepository = courseRepository;
         this.courseService = courseService;
         this.employeeRepository = employeeRepository;
         this.employeeService = employeeService;
+        this.studentRepository = studentRepository;
     }
 
     @Override
@@ -56,6 +61,7 @@ public class SampleDataSeeder implements ApplicationRunner {
         Map<String, Department> departments = seedDepartments();
         seedCourses(departments);
         seedEmployees(departments);
+        seedStudents(departments);
     }
 
     private Map<String, Department> seedDepartments() {
@@ -111,5 +117,26 @@ public class SampleDataSeeder implements ApplicationRunner {
             Department department, int hireYear) {
         return new Employee(number, firstName, lastName, (firstName + "." + lastName).toLowerCase() + "@example.edu",
                 department, type, LocalDate.of(hireYear, 8, 15));
+    }
+
+    private void seedStudents(Map<String, Department> departments) {
+        if (studentRepository.count() > 0) {
+            return;
+        }
+        studentRepository.save(student("2024-0001", "Olivia", "Martin", 2024, departments.get("CS"), StudentStatus.ACTIVE));
+        studentRepository.save(student("2024-0002", "Ethan", "Nguyen", 2024, departments.get("MATH"), StudentStatus.ACTIVE));
+        studentRepository.save(student("2023-0107", "Sofia", "Patel", 2023, departments.get("CS"), StudentStatus.ACTIVE));
+        // No major declared yet.
+        studentRepository.save(student("2025-0042", "Marcus", "Johnson", 2025, null, StudentStatus.ACTIVE));
+        studentRepository.save(student("2019-0311", "Hannah", "Brooks", 2019, departments.get("ENG"), StudentStatus.GRADUATED));
+    }
+
+    private Student student(String number, String firstName, String lastName, int enrollmentYear,
+            Department department, StudentStatus status) {
+        Student student = new Student(number, firstName, lastName,
+                (firstName + "." + lastName).toLowerCase() + "@example.edu", LocalDate.of(enrollmentYear, 8, 25),
+                department);
+        student.setStatus(status);
+        return student;
     }
 }

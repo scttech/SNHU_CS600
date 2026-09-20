@@ -18,3 +18,18 @@ a single screen for adding, editing, and removing the two kinds of `employees` r
   and deleted together. An employee number or email already used by someone else is rejected with a
   message, and the form stays open so it can be corrected.
 - A few sample faculty and staff are seeded on first startup, like the courses and departments.
+
+## Students
+
+The Dashboard's **Students** tile opens [`StudentView`](../../module7/src/main/java/com/scttech/cs600/module7/ui/StudentView.java),
+a single screen for adding, editing, and removing rows of the `students` table
+(see the [Module 4 schema](../module4/README.md#students)).
+
+- The form has the student's number, name, email, date of birth (optional, must be in the past),
+  enrollment date (defaults to today), major, and status. The status is the native Postgres enum
+  from Module 4, offered as a drop-down: Active, Inactive, Graduated, or Withdrawn.
+- The major is optional and can be cleared; a student without one shows as **Undeclared**.
+- A student number or email already used by someone else is rejected with a message by
+  [`StudentService`](../../module7/src/main/java/com/scttech/cs600/module7/service/students/StudentService.java),
+  and the form stays open so it can be corrected.
+- A few sample students are seeded on first startup, including one who hasn't declared a major.

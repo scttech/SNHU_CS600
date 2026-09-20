@@ -79,10 +79,10 @@ These conventions apply to every table (they're omitted from the diagram itself 
     `ALTER TYPE`, not by relying on `ddl-auto`.
   - Hibernate names the type after the Java enum's simple name, lowercased by Postgres
     (`EmployeeType` → `employeetype`), and that name can't be overridden.
-  - Implemented so far: `EmployeeType` and `EmployeeStatus` on `Employee`, and `AcademicRank` and
-    `TenureStatus` on `FacultyDetails`. The remaining enum-like columns (`students.status` and
-    `enrollments.status`) still show `VARCHAR` + `CHECK` in the tables below until their entities
-    are built, and should follow this same convention.
+  - Implemented so far: `EmployeeType` and `EmployeeStatus` on `Employee`, `AcademicRank` and
+    `TenureStatus` on `FacultyDetails`, and `StudentStatus` on `Student`. The remaining enum-like
+    column (`enrollments.status`) still shows `VARCHAR` + `CHECK` in the table below until its
+    entity is built, and should follow this same convention.
 
 ## Tables
 
@@ -191,7 +191,12 @@ constraint or trigger; the application is expected to create them together.
 | `date_of_birth` | `DATE` | |
 | `enrollment_date` | `DATE` | `NOT NULL` |
 | `department_id` | `UUID` | FK → `departments.id`, nullable (undeclared major) |
-| `status` | `VARCHAR(20)` | `NOT NULL DEFAULT 'ACTIVE'`, `CHECK (status IN ('ACTIVE', 'INACTIVE', 'GRADUATED', 'WITHDRAWN'))` |
+| `status` | `studentstatus` (native `ENUM`) | `NOT NULL DEFAULT 'ACTIVE'` — values `'ACTIVE'`, `'INACTIVE'`, `'GRADUATED'`, `'WITHDRAWN'`; Java enum `StudentStatus` |
+
+Mapped by the `Student` entity (`model/students/`). `StudentStatus` is the Java enum behind the
+native Postgres `ENUM` type above; adding a value means adding an enum constant and running
+`ALTER TYPE ... ADD VALUE` on an existing database (see Conventions). `department_id` is the
+student's declared major and is nullable, so a student can be undeclared.
 
 ### `terms`
 

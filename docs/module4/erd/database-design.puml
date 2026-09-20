@@ -97,7 +97,7 @@ package "People" {
     date_of_birth : DATE
     enrollment_date : DATE
     fk(department_id) : UUID <<nullable, declared major>>
-    status : VARCHAR(20) <<default 'ACTIVE'>>
+    status : studentstatus <<enum: "ACTIVE" | "INACTIVE" | "GRADUATED" | "WITHDRAWN", default 'ACTIVE'>>
   }
 
 }
