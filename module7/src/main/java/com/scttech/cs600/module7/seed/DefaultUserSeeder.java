@@ -1,4 +1,4 @@
-package com.scttech.cs600.module7.security;
+package com.scttech.cs600.module7.seed;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;

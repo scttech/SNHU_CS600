@@ -1,5 +1,6 @@
 package com.scttech.cs600.module7.seed;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -10,9 +11,15 @@ import org.springframework.stereotype.Component;
 
 import com.scttech.cs600.module7.model.course.Course;
 import com.scttech.cs600.module7.model.department.Department;
+import com.scttech.cs600.module7.model.employees.Employee;
+import com.scttech.cs600.module7.model.employees.EmployeeType;
+import com.scttech.cs600.module7.model.employees.faculty.AcademicRank;
+import com.scttech.cs600.module7.model.employees.faculty.TenureStatus;
 import com.scttech.cs600.module7.repository.course.CourseRepository;
 import com.scttech.cs600.module7.repository.department.DepartmentRepository;
+import com.scttech.cs600.module7.repository.employees.EmployeeRepository;
 import com.scttech.cs600.module7.service.course.CourseService;
+import com.scttech.cs600.module7.service.employees.EmployeeService;
 
 /**
  * Fills an empty catalog with sample data so the app is worth clicking through right after
@@ -31,18 +38,24 @@ public class SampleDataSeeder implements ApplicationRunner {
     private final DepartmentRepository departmentRepository;
     private final CourseRepository courseRepository;
     private final CourseService courseService;
+    private final EmployeeRepository employeeRepository;
+    private final EmployeeService employeeService;
 
     public SampleDataSeeder(DepartmentRepository departmentRepository, CourseRepository courseRepository,
-            CourseService courseService) {
+            CourseService courseService, EmployeeRepository employeeRepository,
+            EmployeeService employeeService) {
         this.departmentRepository = departmentRepository;
         this.courseRepository = courseRepository;
         this.courseService = courseService;
+        this.employeeRepository = employeeRepository;
+        this.employeeService = employeeService;
     }
 
     @Override
     public void run(ApplicationArguments args) {
         Map<String, Department> departments = seedDepartments();
         seedCourses(departments);
+        seedEmployees(departments);
     }
 
     private Map<String, Department> seedDepartments() {
@@ -75,5 +88,28 @@ public class SampleDataSeeder implements ApplicationRunner {
     private Course saveCourse(String courseCode, String title, int credits, Department department,
             Set<Course> prerequisites) {
         return courseService.save(new Course(courseCode, title, credits, department), prerequisites);
+    }
+
+    private void seedEmployees(Map<String, Department> departments) {
+        if (employeeRepository.count() > 0) {
+            return;
+        }
+        Employee alvarez = employee("F-1001", "Maria", "Alvarez", EmployeeType.FACULTY, departments.get("CS"), 2009);
+        employeeService.saveFaculty(alvarez, AcademicRank.PROFESSOR, TenureStatus.TENURED, "Tech Hall 310");
+        Employee okafor = employee("F-1002", "James", "Okafor", EmployeeType.FACULTY, departments.get("MATH"), 2019);
+        employeeService.saveFaculty(okafor, AcademicRank.ASSISTANT_PROFESSOR, TenureStatus.TENURE_TRACK, "Science 204");
+        Employee raman = employee("F-1003", "Priya", "Raman", EmployeeType.FACULTY, departments.get("CS"), 2023);
+        employeeService.saveFaculty(raman, AcademicRank.ADJUNCT, TenureStatus.NON_TENURE, null);
+
+        Employee kim = employee("S-2001", "Daniel", "Kim", EmployeeType.STAFF, departments.get("CS"), 2016);
+        employeeService.saveStaff(kim, "Department Administrator", "Tech Hall 101");
+        Employee bennett = employee("S-2002", "Laura", "Bennett", EmployeeType.STAFF, departments.get("ENG"), 2021);
+        employeeService.saveStaff(bennett, "Program Coordinator", null);
+    }
+
+    private Employee employee(String number, String firstName, String lastName, EmployeeType type,
+            Department department, int hireYear) {
+        return new Employee(number, firstName, lastName, (firstName + "." + lastName).toLowerCase() + "@example.edu",
+                department, type, LocalDate.of(hireYear, 8, 15));
     }
 }

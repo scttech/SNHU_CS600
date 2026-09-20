@@ -2,7 +2,8 @@ package com.scttech.cs600.module7.ui;
 
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.FlexLayout;
+import com.vaadin.flow.component.orderedlayout.FlexLayout.FlexWrap;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
@@ -28,11 +29,17 @@ public class DashboardView extends VerticalLayout {
         add(new AppHeader("Dashboard", authenticationContext));
         add(new H3("Registrar tools"));
 
-        HorizontalLayout tiles = new HorizontalLayout(
+        // A wrapping flex row rather than a HorizontalLayout, which never wraps: as tools are added
+        // the tiles flow onto more lines on a narrow window instead of forcing a horizontal scroll.
+        FlexLayout tiles = new FlexLayout(
                 tool("Course Catalog", "Add, edit, and remove courses", CourseView.class),
                 tool("Departments", "Add, edit, and remove departments", DepartmentView.class),
+                tool("Faculty & Staff", "Add, edit, and remove faculty and staff members", EmployeeView.class),
                 comingSoon("Students"),
                 comingSoon("Scheduling"));
+        tiles.setFlexWrap(FlexWrap.WRAP);
+        tiles.setWidthFull();
+        tiles.getStyle().set("gap", "var(--lumo-space-m)");
         add(tiles);
     }
 

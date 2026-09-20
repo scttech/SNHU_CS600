@@ -65,22 +65,24 @@ package "People" {
     last_name : VARCHAR(100)
     email : VARCHAR(255) <<unique>>
     fk(department_id) : UUID
-    employee_type : VARCHAR(10) <<"FACULTY" | "STAFF">>
+    employee_type : employeetype <<enum: "FACULTY" | "STAFF", unique with id>>
     hire_date : DATE
-    status : VARCHAR(20) <<default 'ACTIVE'>>
+    status : employeestatus <<enum, default 'ACTIVE'>>
   }
 
   entity faculty_details {
     pk(fk(employee_id)) : UUID
     --
-    academic_rank : VARCHAR(50)
-    tenure_status : VARCHAR(20)
+    employee_type : employeetype <<default 'FACULTY', check = 'FACULTY', part of composite fk>>
+    academic_rank : academicrank <<enum: "INSTRUCTOR" | "ASSISTANT_PROFESSOR" | "ASSOCIATE_PROFESSOR" | "PROFESSOR" | "ADJUNCT">>
+    tenure_status : tenurestatus <<nullable, enum: "TENURED" | "TENURE_TRACK" | "NON_TENURE">>
     office_location : VARCHAR(100)
   }
 
   entity staff_details {
     pk(fk(employee_id)) : UUID
     --
+    employee_type : employeetype <<default 'STAFF', check = 'STAFF', part of composite fk>>
     job_title : VARCHAR(100)
     office_location : VARCHAR(100)
   }
@@ -151,8 +153,8 @@ courses ||--o{ course_prerequisites   : "prerequisite_course_id"
 courses ||--o{ course_sections        : "offered as"
 terms ||--o{ course_sections          : "scheduled in"
 
-employees ||--o| faculty_details      : "extends (when FACULTY)"
-employees ||--o| staff_details        : "extends (when STAFF)"
+employees ||--o| faculty_details      : "extends (when FACULTY; composite FK on id + employee_type)"
+employees ||--o| staff_details        : "extends (when STAFF; composite FK on id + employee_type)"
 
 faculty_details |o--o{ course_sections : "teaches"
 
