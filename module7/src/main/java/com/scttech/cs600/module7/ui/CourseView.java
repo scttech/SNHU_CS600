@@ -23,6 +23,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -79,10 +80,11 @@ public class CourseView extends VerticalLayout {
     private final MultiSelectComboBox<Course> prerequisites = new MultiSelectComboBox<>("Prerequisites");
     private final Binder<Course> binder = new BeanValidationBinder<>(Course.class);
 
+    private final H3 headerText = new H3("Courses");
     private final Button save = new Button("Save");
     private final Button delete = new Button("Delete");
     private final Button cancel = new Button("Cancel");
-    private final Button addNew = new Button("Add course");
+    private final Button addNewCourse = new Button("Add course");
 
     @SuppressWarnings("null")
     public CourseView(CourseRepository courseRepository, DepartmentRepository departmentRepository,
@@ -118,7 +120,7 @@ public class CourseView extends VerticalLayout {
         delete.addClickListener(event -> delete());
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
         cancel.addClickListener(event -> editCourse(null));
-        addNew.addClickListener(event -> {
+        addNewCourse.addClickListener(event -> {
             grid.asSingleSelect().clear();
             editCourse(new Course("", "", 1));
         });
@@ -132,7 +134,7 @@ public class CourseView extends VerticalLayout {
         content.setFlexGrow(2, grid);
         content.setFlexGrow(1, form);
 
-        add(new AppHeader("Courses", authenticationContext), new RouterLink("← Dashboard", DashboardView.class), addNew, content);
+        add(new AppHeader(authenticationContext), headerText, addNewCourse, content);
 
         refreshGrid();
         editCourse(null);

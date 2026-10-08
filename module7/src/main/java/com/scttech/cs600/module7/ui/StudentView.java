@@ -122,7 +122,7 @@ public class StudentView extends VerticalLayout {
         content.setFlexGrow(2, grid);
         content.setFlexGrow(1, form);
 
-        add(new AppHeader("Students", authenticationContext), new RouterLink("← Dashboard", DashboardView.class),
+        add(new AppHeader(authenticationContext),
                 addNew, content);
 
         refreshGrid();

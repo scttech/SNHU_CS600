@@ -80,9 +80,8 @@ These conventions apply to every table (they're omitted from the diagram itself 
   - Hibernate names the type after the Java enum's simple name, lowercased by Postgres
     (`EmployeeType` → `employeetype`), and that name can't be overridden.
   - Implemented so far: `EmployeeType` and `EmployeeStatus` on `Employee`, `AcademicRank` and
-    `TenureStatus` on `FacultyDetails`, and `StudentStatus` on `Student`. The remaining enum-like
-    column (`enrollments.status`) still shows `VARCHAR` + `CHECK` in the table below until its
-    entity is built, and should follow this same convention.
+    `TenureStatus` on `FacultyDetails`, `StudentStatus` on `Student`, and `EnrollmentStatus` on
+    `Enrollment`.
 
 ## Tables
 
@@ -207,6 +206,8 @@ student's declared major and is nullable, so a student can be undeclared.
 | `start_date` | `DATE` | `NOT NULL` |
 | `end_date` | `DATE` | `NOT NULL`, `CHECK (end_date > start_date)` |
 
+Mapped by the `Term` entity (`model/term/`).
+
 ### `course_sections`
 
 A specific offering of a `course` within a `term`.
@@ -224,6 +225,10 @@ A specific offering of a `course` within a `term`.
 
 `UNIQUE (course_id, term_id, section_number)`.
 
+Mapped by the `CourseSection` entity (`model/course/section/`). `instructor_id` references
+`faculty_details.employee_id` (not `employees.id`), consistent with the "Why `employees` +
+`faculty_details` / `staff_details`" rationale above.
+
 ### `enrollments`
 
 Join table between `students` and `course_sections`.
@@ -234,7 +239,10 @@ Join table between `students` and `course_sections`.
 | `student_id` | `UUID` | `NOT NULL`, FK → `students.id` |
 | `section_id` | `UUID` | `NOT NULL`, FK → `course_sections.id` |
 | `enrollment_date` | `DATE` | `NOT NULL DEFAULT CURRENT_DATE` |
-| `status` | `VARCHAR(20)` | `NOT NULL DEFAULT 'ENROLLED'`, `CHECK (... IN ('ENROLLED', 'DROPPED', 'COMPLETED', 'WITHDRAWN'))` |
+| `status` | `enrollmentstatus` (native `ENUM`) | `NOT NULL DEFAULT 'ENROLLED'` — values `'ENROLLED'`, `'DROPPED'`, `'COMPLETED'`, `'WITHDRAWN'`; Java enum `EnrollmentStatus` |
 | `grade` | `VARCHAR(5)` | nullable until the section completes |
 
 `UNIQUE (student_id, section_id)` — a student enrolls in a given section at most once.
+
+Mapped by the `Enrollment` entity (`model/enrollment/`). `EnrollmentStatus` is the Java enum behind
+the native Postgres `ENUM` type above (see Conventions).

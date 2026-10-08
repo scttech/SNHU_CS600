@@ -32,6 +32,7 @@ public class MainLayout extends AppLayout {
         nav.addItem(new SideNavItem("Buttons", ButtonsView.class, VaadinIcon.HAND.create()));
         nav.addItem(new SideNavItem("Text inputs", TextInputsView.class, VaadinIcon.EDIT.create()));
         nav.addItem(new SideNavItem("Selection", SelectionView.class, VaadinIcon.CHECK_SQUARE.create()));
+        nav.addItem(new SideNavItem("Menus", MenusView.class, VaadinIcon.MENU.create()));
         nav.addItem(new SideNavItem("Date & time", DateTimeView.class, VaadinIcon.CALENDAR.create()));
         nav.addItem(new SideNavItem("Data display", DataDisplayView.class, VaadinIcon.TABLE.create()));
         nav.addItem(new SideNavItem("Layouts", LayoutsView.class, VaadinIcon.SPLIT.create()));

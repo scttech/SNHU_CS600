@@ -58,7 +58,6 @@ public class FacultyDetails {
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @ColumnDefault("'FACULTY'")
     @Column(name = "employee_type", nullable = false, insertable = false, updatable = false)
-    @SuppressWarnings("unused")
     private EmployeeType employeeType;
 
     @NotNull

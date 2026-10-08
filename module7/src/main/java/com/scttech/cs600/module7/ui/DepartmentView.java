@@ -74,7 +74,7 @@ public class DepartmentView extends VerticalLayout {
         content.setFlexGrow(2, grid);
         content.setFlexGrow(1, form);
 
-        add(new AppHeader("Departments", authenticationContext), new RouterLink("← Dashboard", DashboardView.class), addNew, content);
+        add(new AppHeader(authenticationContext), addNew, content);
 
         refreshGrid();
         editDepartment(null);
