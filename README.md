@@ -54,3 +54,11 @@ in `moduleN/src/main/java/com/scttech/cs600/moduleN`:
 - [Troubleshooting: A problem/solution guide for common errors](./docs/troubleshooting/README.md)
 
 - [`Vaadin Examples`](./docs/vaadin_example/README.md): a UI-only reference catalog of Vaadin components and layouts
+
+## Helpful Projects
+
+I put together some additional projects to hopefully help you with your Business Model Canvas/Lean Canvas and Wardley Mapping.
+
+Take a look at my [CanvasStudio](https://github.com/scttech/canvas_studio) project for some samples of a Business Model Canvas and Lean Canvas.
+
+Take a look at my [Wardley Maps](https://github.com/scttech/wardley_maps) project for some samples and tutorials on Wardley Maps.
